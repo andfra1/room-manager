@@ -3,7 +3,10 @@ import { ref } from 'vue'
 
 const newItemName = ref('')
 
-const props = defineProps(['coreList', 'prefix'])
+const props = defineProps([
+    'coreList',
+    'prefix'
+  ])
 
 const addNewListItem = (coreList: [], prefix: string, newItemName: string) => {
   newItemName = newItemName.toLowerCase()
@@ -11,11 +14,11 @@ const addNewListItem = (coreList: [], prefix: string, newItemName: string) => {
     id: idGenerator(coreList, prefix),
     displayName: newItemName || 'b-' + (coreList.length + 1),
     unicodeName:
-      newItemName.length > 0 ? unicodeGenerator(newItemName) : 'b-' + (coreList.length + 1),
+      newItemName.length > 0 ? unicodeGenerator(newItemName) : 'uid-' + (coreList.length + 1),
     equipment: [],
   }
+  newItemName = '';
   coreList.push(objTemplate)
-  // ustalenie szablonu zapisu + zmienne
   //   zapis do local.storage
 
   console.log(objTemplate)
@@ -33,10 +36,12 @@ const idGenerator = (coreList: [], prefix: string) => {
   const makeAnID = []
   const someKindOfHash = []
 
+  // id
   for (let i = 0; i < 10; i++) {
     makeAnID.push(alphanumeral[Math.floor(Math.random() * alphanumeral.length)])
   }
 
+  // hash
   for (let i = 0; i < 4; i++) {
     someKindOfHash.push(makeAnID[Math.floor(Math.random() * makeAnID.length)])
   }
@@ -49,12 +54,24 @@ const idGenerator = (coreList: [], prefix: string) => {
 </script>
 
 <template>
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" max="64" v-model="newItemName" />
+  <div class="input-group w-full mb-3">
+    <div class="form-floating">
+    <input id="listAddItem"
+           type="text"
+           class="form-control"
+           max="64"
+           placeholder="np. World Trade Center"
+           v-model="newItemName"
+    />
+      <label for="listAddItem"
+             class="form-label">
+        Podaj nazwę:
+      </label>
+    </div>
     <button
       type="submit"
       class="btn btn-primary"
-      @click="addNewListItem(coreList, 'bldg', newItemName)"
+      @click="addNewListItem(props.coreList, props.prefix, newItemName)"
     >
       dodaj
     </button>

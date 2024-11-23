@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
+import IconTrash2 from '@/components/icons/IconTrash2.vue'
 
 const props = defineProps([
   'listParameters',
@@ -24,18 +25,19 @@ const removeListItem = (item: []) => {
         class="list-group-item d-flex align-items-center justify-content-between"
     >
       <div>
-      {{ index + 1 }} |
-      <RouterLink :to="props.listRouteTo">
-        name: {{ item.displayName }}
-      </RouterLink>
-         | {{ props.listSubordinate }}: {{ item[props.listSubordinate].length }}
-</div>
+        {{ index + 1 }} |
+        <RouterLink :to="props.listRouteTo">
+          name: {{ item.displayName }}
+        </RouterLink>
+           | {{ props.listSubordinate }}: {{ item[props.listSubordinate].length }}
+      </div>
       <button
         type="submit"
-        class="btn btn-danger"
+        class="btn btn-danger p-2 d-flex align-items-center justify-content-center"
+        style="width:32px;height:32px"
         @click="removeListItem(item)"
       >
-        usuń
+        <IconTrash2/>
       </button>
     </li>
   </ul>

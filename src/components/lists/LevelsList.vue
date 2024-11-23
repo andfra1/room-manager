@@ -46,8 +46,8 @@ const coreList = ref([
   <ListHeader list-header="Levels list"/>
   <ListAddItem
     :coreList="coreList"
-    prefix="lvl"
     v-model="newItemName"
+    prefix="lvl"
   />
   <ListLocations
     :list-parameters="(coreList && coreList.length > 0) ? coreList : []"

@@ -25,7 +25,6 @@ import {RouterLink} from "vue-router";
 <style scoped>
 header {
   line-height: 1.5;
-  height: 120px;
   border: 1px solid #333;
 }
 
