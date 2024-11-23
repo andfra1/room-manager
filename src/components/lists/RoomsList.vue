@@ -3,6 +3,9 @@ import { ref } from 'vue'
 import ListComponentInfo from '@/components/lists/lists-components/ListComponentInfo.vue'
 import ListHeader from "@/components/lists/lists-components/ListHeader.vue";
 import ListLocations from "@/components/lists/lists-components/ListLocatons.vue";
+import ListAddItem from '@/components/lists/lists-components/ListAddItem.vue'
+
+const newItemName = ref('')
 
 const coreList = ref([
   {
@@ -41,6 +44,11 @@ const coreList = ref([
 <template>
   <ListComponentInfo component-name="RoomsList.vue"/>
   <ListHeader listHeader="Rooms list"/>
+  <ListAddItem
+    :coreList="coreList"
+    prefix="lvl"
+    v-model="newItemName"
+  />
   <ListLocations
     :list-parameters="(coreList && coreList.length > 0) ? coreList : []"
     list-location="rooms"

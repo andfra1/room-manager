@@ -3,19 +3,19 @@ import {RouterLink} from "vue-router";
 </script>
 
 <template>
-  <header>
-    <figure>
+  <header class="d-flex align-items-center justify-between p-3 relative">
+    <figure class="m-0">
       <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125"/>
     </figure>
 
-    <nav class="wrapper">
-      <RouterLink to="/">
+    <nav class="list-group-horizontal w-full">
+      <RouterLink to="/" class="list-group-item">
         Home
       </RouterLink>
-      <RouterLink to="/building">
+      <RouterLink to="/building" class="list-group-item">
         Lokacje
       </RouterLink>
-      <RouterLink to="/help">
+      <RouterLink to="/help" class="list-group-item">
         Pomoc
       </RouterLink>
     </nav>
@@ -26,12 +26,7 @@ import {RouterLink} from "vue-router";
 header {
   line-height: 1.5;
   height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
   border: 1px solid #333;
-  position: relative;
 }
 
 nav {
@@ -54,28 +49,15 @@ figure {
 }
 
 nav {
-  width: 100%;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  align-self: flex-end;
   margin: auto 0 0 1rem;
 }
 
 nav a {
+  font-size: 1rem;
   padding: .25rem 1rem;
   margin: 0;
   display: inline-block;
   border-left: 1px solid var(--color-border);
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
 }
 
 nav a:first-of-type {
