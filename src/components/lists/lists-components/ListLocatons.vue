@@ -4,27 +4,32 @@ import { ref } from 'vue'
 import IconTrash2 from '@/components/icons/IconTrash2.vue'
 
 const props = defineProps([
-  'listParameters',
+  'coreList',
   'listSubordinate',
   'listLocation',
   'listRouteTo',
+  'prefix'
 ])
 
-const listParameters = ref(props.listParameters)
+const listParameters = ref(props.coreList)
 
-const removeListItem = (item: []) => {
+const setLocalStorage = (prefix: string, data: object) => {
+  localStorage.setItem('rmApp-' + prefix, JSON.stringify(data))
+}
+
+const removeListItem = (item: [], prefix: string) => {
   listParameters.value.splice(listParameters.value.indexOf(item),1)
+  setLocalStorage(prefix, listParameters.value)
 }
 </script>
 
 <template>
-  <ul class="list-group container-fluid p-0">
+  <ul class="container-fluid p-0">
     <li v-for="(item, index) in listParameters"
-        :data-building-id="item.id"
+        :data-id="item.id"
         :key="item.id"
-        class="list-group-item d-flex align-items-center justify-content-between"
-    >
-      <div>
+        class="bg-light d-flex align-items-center justify-content-between w-full my-1 rounded-3 overflow-hidden" role="group">
+      <div class="w-full py-1 px-3">
         {{ index + 1 }} |
         <RouterLink :to="props.listRouteTo">
           name: {{ item.displayName }}
@@ -34,8 +39,8 @@ const removeListItem = (item: []) => {
       <button
         type="submit"
         class="btn btn-danger p-2 d-flex align-items-center justify-content-center"
-        style="width:32px;height:32px"
-        @click="removeListItem(item)"
+        style="width:36px;height:36px"
+        @click="removeListItem(item, props.prefix)"
       >
         <IconTrash2/>
       </button>

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { mounted, ref } from 'vue'
 import ListComponentInfo from '@/components/lists/lists-components/ListComponentInfo.vue'
 import ListHeader from "@/components/lists/lists-components/ListHeader.vue";
 import ListLocations from "@/components/lists/lists-components/ListLocatons.vue";
 import ListAddItem from '@/components/lists/lists-components/ListAddItem.vue'
+import Breadcrumbs from '@/components/breadcrumbs/Breadcrumbs.vue'
 
+const componentPrefix = 'room';
 const newItemName = ref('')
 
 const coreList = ref([
@@ -39,18 +41,32 @@ const coreList = ref([
     equipment: ['sorted', 'from', 'theme', 'from', 'theme', 'pattern'],
   },
 ])
+
+const checkLocalcStorage = (prefix: string) => {
+  const getItem = localStorage.getItem('rmApp-' + prefix);
+  if (getItem && JSON.parse(getItem).length > 0) {
+    coreList.value = JSON.parse(getItem)
+  };
+};
+
+mounted: {
+  checkLocalcStorage(componentPrefix)
+};
 </script>
 
 <template>
   <ListComponentInfo component-name="RoomsList.vue"/>
+
+  <Breadcrumbs :to="['/','building/','level/']" order="3" name="Rooms list"/>
   <ListHeader listHeader="Rooms list"/>
   <ListAddItem
     :coreList="coreList"
+    :prefix="componentPrefix"
     v-model="newItemName"
-    prefix="lvl"
   />
   <ListLocations
-    :list-parameters="(coreList && coreList.length > 0) ? coreList : []"
+    :core-list="(coreList && coreList.length > 0) ? coreList : []"
+    :prefix="componentPrefix"
     list-location="rooms"
     list-subordinate="equipment"
     list-route-to="/building/level/room/"

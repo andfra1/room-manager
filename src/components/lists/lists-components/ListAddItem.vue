@@ -1,27 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const newItemName = ref('')
+const props = defineProps(['coreList', 'prefix'])
 
-const props = defineProps([
-    'coreList',
-    'prefix'
-  ])
+const coreList = props.coreList
+const newItemName = ref('')
 
 const addNewListItem = (coreList: [], prefix: string, newItemName: string) => {
   newItemName = newItemName.toLowerCase()
   const objTemplate = {
     id: idGenerator(coreList, prefix),
-    displayName: newItemName || 'b-' + (coreList.length + 1),
+    displayName: newItemName || 'uid-' + (coreList.length + 1),
     unicodeName:
       newItemName.length > 0 ? unicodeGenerator(newItemName) : 'uid-' + (coreList.length + 1),
     equipment: [],
   }
-  newItemName = '';
   coreList.push(objTemplate)
-  //   zapis do local.storage
-
-  console.log(objTemplate)
+  setLocalStorage(prefix, coreList)
 }
 
 const unicodeGenerator = (writeSomething: string) => {
@@ -35,6 +30,7 @@ const idGenerator = (coreList: [], prefix: string) => {
   const alphanumeral = alpha.concat(numeral)
   const makeAnID = []
   const someKindOfHash = []
+  let orderValue = '0'
 
   // id
   for (let i = 0; i < 10; i++) {
@@ -46,27 +42,38 @@ const idGenerator = (coreList: [], prefix: string) => {
     someKindOfHash.push(makeAnID[Math.floor(Math.random() * makeAnID.length)])
   }
 
+  const numbered = (listData) => {
+    const listString = listData.length.toString()
+    while (listString.length > (orderValue.length - 1)) {
+      orderValue += '0'
+    }
+      orderValue = orderValue.slice(0, orderValue.length - listString.length)
+      return orderValue = orderValue + listString
+  }
   let idIs = prefix ? prefix + '-' : 'nie-ustawiam-prefixu-bo-jeste-ponczkie-'
-  idIs = idIs + 'id-0' + coreList.length + '-' + someKindOfHash.join('') + '-' + makeAnID.join('')
+  idIs = idIs + 'id-' + numbered(coreList) + '-' + someKindOfHash.join('') + '-' + makeAnID.join('')
 
   return idIs
+}
+
+const setLocalStorage = (prefix: string, data: object) => {
+  localStorage.setItem('rmApp-' + prefix, JSON.stringify(data))
+  console.log('rmApp-' + prefix + ': ', JSON.parse(localStorage.getItem('rmApp-' + prefix)))
 }
 </script>
 
 <template>
   <div class="input-group w-full mb-3">
     <div class="form-floating">
-    <input id="listAddItem"
-           type="text"
-           class="form-control"
-           max="64"
-           placeholder="np. World Trade Center"
-           v-model="newItemName"
-    />
-      <label for="listAddItem"
-             class="form-label">
-        Podaj nazwę:
-      </label>
+      <input
+        id="listAddItem"
+        type="text"
+        class="form-control"
+        max="64"
+        placeholder="np. World Trade Center"
+        v-model="newItemName"
+      />
+      <label for="listAddItem" class="form-label"> Podaj nazwę: </label>
     </div>
     <button
       type="submit"

@@ -5,13 +5,13 @@ const props = defineProps([
 </script>
 
 <template>
-  <span>
+  <span class="infooo">
     component: {{ props.componentName }}
   </span>
 </template>
 
 <style>
-span {
+span.infooo {
   display: block;
   font-size: 10px;
   color: #ccc;
